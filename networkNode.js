@@ -73,3 +73,9 @@ function connectToPeers(newPeers) {
         });
     });
 }
+
+connectToPeers(peers);
+app.listen(httpPort, () => {
+    console.log(`HTTP server listening on port ${httpPort}`);
+    console.log(`Websocket P2P server listening on port ${p2pPort}`);
+});

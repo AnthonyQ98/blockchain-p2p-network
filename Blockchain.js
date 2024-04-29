@@ -77,4 +77,4 @@ class BlockChain {
     }
 }
 
-module.exports = { BlockChain, Transaction};
+module.exports = { BlockChain, Transaction };

@@ -14,3 +14,19 @@ const peers = process.argv.slice(4);
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// init blockchain object
+const blockchain = new Blockchain();
+
+// define GET endpoint for getting blockchain blocks
+app.get('/blocks',  (req, res) => {
+    res.json(blockchain.chain);
+});
+
+// define POST endpoint for mining block operation
+app.post('/mineBlock', (req, res) => {
+    const newTransaction = new Transaction(req.body.from, req.body.to, req.body.amount);
+    blockchain.addTransaction(newTransaction);
+    blockchain.minePendingTransactions(req.body.minerAddress);
+    res.redirect('/blocks');
+})

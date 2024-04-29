@@ -29,4 +29,21 @@ app.post('/mineBlock', (req, res) => {
     blockchain.addTransaction(newTransaction);
     blockchain.minePendingTransactions(req.body.minerAddress);
     res.redirect('/blocks');
+});
+
+// define webpage endpoint
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname,'public', 'index.html'));
+})
+
+// hold sockets
+const sockets = [];
+
+// create ws socket
+const server = new WebSocket.Server({port: p2pPort});
+
+// define listener for socket connection
+server.on('connection', (socket) => {
+    sockets.push(socket);
+    initConnection(socket);
 })

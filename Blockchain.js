@@ -72,8 +72,9 @@ class BlockChain {
             if(currentBlock.previousHash !== previousBlock.hash) {
                 return false;
             }
-
-            return true;
         }
+        return true;
     }
 }
+
+module.exports = { BlockChain, Transaction};

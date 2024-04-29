@@ -60,3 +60,16 @@ function initConnection(socket) {
     });
     socket.send(JSON.stringify({type: 'queryLatest'}));
 }
+
+function connectToPeers(newPeers) {
+    newPeers.foreach((peer) => {
+        const socket = WebSocket(peer);
+        socket.on('open', () => {
+            initConnection(socket);
+            sockets.push(socket);
+        });
+        socket.on('error', () => {
+            console.log('Connection failed with peer: ' + peer);
+        });
+    });
+}

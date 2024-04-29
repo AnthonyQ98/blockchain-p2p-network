@@ -44,4 +44,36 @@ class BlockChain {
     getLatestBlock() {
         return this.chain(this.chain.length - 1);
     }
+
+    minePendingTransaction(miningRewardAddress) {
+        let block = new Block(Date.now, this.pendingTransactions, this.getLatestBlock().hash);
+        block.mineBlock(this.difficulty);
+        console.log('Block is mined successfully');
+        this.chain.push(block);
+        this.pendingTransactions = [new Transaction(null, miningRewardAddress, this.miningReward)];
+    }
+
+    addTransaction(transaction) {
+        if (!transaction.fromAddress || !transaction.toAddress) {
+            throw new Error("Transaction must include from and to address");
+        }
+
+        this.pendingTransactions.push(transaction);
+    }
+
+    isChainValid() {
+        for(let i = 1; i<this.chain.length; i++) {
+            const currentBlock = this.chain[i];
+            const previousBlock = this.chain[i-1];
+            if (currentBlock.hash !== currentBlock.calculateHash()) {
+                return false;
+            }
+
+            if(currentBlock.previousHash !== previousBlock.hash) {
+                return false;
+            }
+
+            return true;
+        }
+    }
 }

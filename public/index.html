@@ -1,11 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Anthonys P2P Blockchain Network</title>
 </head>
+
 <body>
-    
+    <h1>Cryptocurrency Network Interface</h1>
+
+    <script>
+        function submitTransaction() {
+            const fromAddress = document.getElementById('fromAddress').value;
+            const toAddress = document.getElementById('toAddress').value;
+            const amount = document.getElementById('amount').value;
+
+            fetch('http://localhost:3001/mineBlock', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: fromAddress, to: toAddress, amount: parseInt(amount)
+                })
+            }).then(response => response.json()).then(data => {
+                alert('Transaction is processed');
+                console.log(data);
+            });
+        }
+
+        function getBlocks() {
+            fetch('http://localhost:3001/blocks')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('blockchainDisplay').textContent = JSON.stringify(data, null, 2);
+            })
+        }
+
+    </script>
 </body>
+
 </html>

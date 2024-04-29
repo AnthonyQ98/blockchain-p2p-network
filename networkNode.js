@@ -46,4 +46,17 @@ const server = new WebSocket.Server({port: p2pPort});
 server.on('connection', (socket) => {
     sockets.push(socket);
     initConnection(socket);
-})
+});
+
+function initConnection(socket) {
+    socket.on('message', (data) => {
+        const response = JSON.parse(data);
+
+        if (response.type === 'queryLatest') {
+            socket.send(JSON.stringify({type: responseLatest, data: JSON.stringify([blockchain.getLatestBlock()])}));
+        } else if (response.type == 'responseLatest') {
+
+        }
+    });
+    socket.send(JSON.stringify({type: 'queryLatest'}));
+}
